@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { notFound, errorHandler } from "./middlewares";
-import { AppRouter } from "./Router/AppRouter";
+import { AppRouter } from "./router/AppRouter";
 import { connectDB } from "./config/db";
 import "express-async-errors";
 import "./controllers";

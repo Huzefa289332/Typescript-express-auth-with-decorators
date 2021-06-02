@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { ValidationChain } from "express-validator";
-import { AppRouter } from "../Router/AppRouter";
+import { AppRouter } from "../router/AppRouter";
 import { Methods, MetadataKeys } from "../constants";
 
 export function controller(routePrefix: string) {
