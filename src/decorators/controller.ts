@@ -1,7 +1,17 @@
 import "reflect-metadata";
-import { ValidationChain } from "express-validator";
+import { Request, Response, NextFunction } from "express";
+import { ValidationChain, validationResult } from "express-validator";
 import { AppRouter } from "../router/AppRouter";
 import { Methods, MetadataKeys } from "../constants";
+import { RequestValidationError } from "../errors";
+
+const validateRequest = (req: Request, res: Response, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new RequestValidationError(errors.array());
+  }
+  next();
+};
 
 export function controller(routePrefix: string) {
   return function (target: Function) {
@@ -37,6 +47,7 @@ export function controller(routePrefix: string) {
         router[method](
           `${routePrefix}${path}`,
           ...validationChain,
+          validateRequest,
           ...middlewares,
           routeHandler
         );

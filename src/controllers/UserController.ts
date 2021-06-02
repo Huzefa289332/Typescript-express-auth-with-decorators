@@ -1,19 +1,13 @@
 import { Request, Response } from "express";
-import { controller, get, post, use, validate } from "../decorators";
+import { controller, get, post, use, validateBody } from "../decorators";
 import { User } from "../repositories/user";
-import {
-  signInCredentials,
-  signUpCredentials,
-  currentUser,
-  validateRequest,
-  requireAuth,
-} from "../middlewares";
+import { currentUser, requireAuth } from "../middlewares";
+import { signInCredentials, signUpCredentials } from "../validations/user";
 
 @controller("/api/users")
 export class UserController {
   @post("/signup")
-  @validate(signUpCredentials)
-  @use(validateRequest)
+  @validateBody(signUpCredentials)
   async signUp(req: Request, res: Response) {
     const { username, email, password } = req.body;
     const { user, userJWT } = await User.signUp(username, email, password);
@@ -22,8 +16,7 @@ export class UserController {
   }
 
   @post("/signin")
-  @validate(signInCredentials)
-  @use(validateRequest)
+  @validateBody(signInCredentials)
   async signIn(req: Request, res: Response) {
     const { email, password } = req.body;
     const { existingUser, userJWT } = await User.signIn(email, password);
