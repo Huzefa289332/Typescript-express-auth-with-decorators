@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { User as UserRepo } from "../repositories/user";
+import { IS_SCHEMA } from "../config/isSchema";
 
 interface UserAttrs {
   username: string;
@@ -47,6 +48,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
+    strict: IS_SCHEMA,
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;
